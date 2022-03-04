@@ -75,9 +75,8 @@ jobs:
           location: ${{ secrets.GKE_ZONE }}
           credentials: ${{ secrets.GKE_SA_KEY }}
         
-      - shell: bash
-        env:
-          K8S_SECRET: ${{ secrets.K8S_SECRET }}
-        run: kubectl create secret generic pomello-secret --from-literal="$K8S_SECRET"
+      - name: create-secret
+        run: kubectl create secret generic pomello-secret --from-literal=${{ secrets.K8S_SECRET }}
+
       - name: apply
         run: kubectl apply -f kubernetes/
