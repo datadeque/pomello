@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pomello-deployment
+  labels:
+    app: pomello
+spec:
+  selector:
+    matchLabels:
+      app: pomello
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pomello
+    spec:
+      container: 
+        - name: pomello
+          image: hongrichard/pomello
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: pomello-secret
+                  key: DATABASE_URL
+    envFrom:
+    - secretRef:
+        name: mariadb-user-creds
+          ports: 
+            - containerPort: 3000
