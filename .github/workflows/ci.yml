@@ -76,7 +76,7 @@ jobs:
           credentials: ${{ secrets.GKE_SA_KEY }}
         
       - name: create-secret
-        run: kubectl create secret generic pomello-secret --from-literal=${{ secrets.K8S_SECRET }}
+        run: kubectl create secret generic pomello-secret --from-literal=DATABASE_URL=${{ secrets.DATABASE_URL }}
 
       - name: apply
         run: kubectl apply -f kubernetes/
