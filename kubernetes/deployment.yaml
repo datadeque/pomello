@@ -23,8 +23,3 @@ spec:
                 secretKeyRef:
                   name: pomello-secret
                   key: DATABASE_URL
-    envFrom:
-    - secretRef:
-        name: mariadb-user-creds
-          ports: 
-            - containerPort: 3000

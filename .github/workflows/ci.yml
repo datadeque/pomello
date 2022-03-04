@@ -60,21 +60,9 @@ jobs:
           push: true
           tags: hongrichard/pomello:latest
 
-  create-k8s-secret:
-    runs-on: ubuntu-latest
-    needs: [docker]
-    if: always() && (needs.docker.result == 'success') && github.ref == 'refs/heads/main'
-    steps: 
-      - uses: azure/k8s-create-secret@v2
-        with:
-          namespace: 'default'
-          secret-type: 'generic'
-          secret-name: pomello-secret
-          data: ${{ secrets.K8S_SECRETS }}
-
   deploy:
     runs-on: ubuntu-latest
-    needs: [create-k8s-secretr]
+    needs: [create-k8s-secret]
     if: always() && (needs.create-k8s-secret.result == 'success') && github.ref == 'refs/heads/main'
     steps: 
       - uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
@@ -86,5 +74,10 @@ jobs:
           cluster_name: ${{ secrets.GKE_CLUSTER }}
           location: ${{ secrets.GKE_ZONE }}
           credentials: ${{ secrets.GKE_SA_KEY }}
+        
+      - shell: bash
+        env:
+          K8S_SECRET: ${{ secrets.K8S_SECRET }}
+        run: kubectl create secret generic pomello-secret --from-literal="$K8S_SECRET"
       - name: apply
-      - run: kubectl apply -f kubernetes/
+        run: kubectl apply -f kubernetes/
