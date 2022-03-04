@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [docker]
     if: always() && (needs.docker.result == 'success') && github.ref == 'refs/heads/main'
-      steps: 
+    steps: 
       - uses: azure/k8s-create-secret@v2
         with:
           namespace: 'default'
@@ -76,16 +76,15 @@ jobs:
     runs-on: ubuntu-latest
     needs: [create-k8s-secretr]
     if: always() && (needs.create-k8s-secret.result == 'success') && github.ref == 'refs/heads/main'
-      steps: 
+    steps: 
       - uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
         with:
           service_account_key: ${{ secrets.GKE_SA_KEY }}
           project_id: ${{ secrets.GKE_PROJECT }}
       - uses: google-github-actions/get-gke-credentials@fb08709ba27618c31c09e014e1d8364b02e5042e
-      with:
-        cluster_name: ${{ secrets.GKE_CLUSTER }}
-        location: ${{ secrets.GKE_ZONE }}
-        credentials: ${{ secrets.GKE_SA_KEY }}
-
+        with:
+          cluster_name: ${{ secrets.GKE_CLUSTER }}
+          location: ${{ secrets.GKE_ZONE }}
+          credentials: ${{ secrets.GKE_SA_KEY }}
       - name: apply
       - run: kubectl apply -f kubernetes/
