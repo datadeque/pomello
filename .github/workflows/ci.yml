@@ -65,6 +65,7 @@ jobs:
     needs: [docker]
     if: always() && (needs.docker.result == 'success') && github.ref == 'refs/heads/main'
     steps: 
+      - uses: actions/checkout@v2
       - uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
         with:
           service_account_key: ${{ secrets.GKE_SA_KEY }}
