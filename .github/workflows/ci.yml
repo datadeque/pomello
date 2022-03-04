@@ -62,8 +62,8 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [create-k8s-secret]
-    if: always() && (needs.create-k8s-secret.result == 'success') && github.ref == 'refs/heads/main'
+    needs: [docker]
+    if: always() && (needs.docker.result == 'success') && github.ref == 'refs/heads/main'
     steps: 
       - uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
         with:
