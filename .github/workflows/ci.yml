@@ -76,11 +76,5 @@ jobs:
           location: ${{ secrets.GKE_ZONE }}
           credentials: ${{ secrets.GKE_SA_KEY }}
 
-      - name: create-image-pull-secret
-        run: kubectl create secret docker-registry docker-registry-secret --docker-username=${{ secrets.DOCKERHUB_USERNAME }} --docker-password=${{ secrets.DOCKERHUB_TOKEN }}
-        
-      - name: create-env-secret
-        run: kubectl create secret generic pomello-secret --from-literal=DATABASE_URL=${{ secrets.DATABASE_URL }}
-
-      - name: apply
+      - name: deploy
         run: kubectl apply -f kubernetes/

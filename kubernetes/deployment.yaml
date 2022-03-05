@@ -14,6 +14,7 @@ spec:
       labels:
         app: pomello
     spec:
+      serviceAccountName: pomello-sa
       containers: 
         - name: pomello
           image: hongrichard/pomello
@@ -23,5 +24,16 @@ spec:
                 secretKeyRef:
                   name: pomello-secret
                   key: DATABASE_URL
+        - name: cloud-sql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.29.0 
+          command:
+            - "/cloud_sql_proxy"
+            - "-instances=datadeque:us-east1:pomello-staging=tcp:5432"
+          securityContext:
+            runAsNonRoot: true
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu:    "1"
       imagePullSecrets:
         - name: docker-registry-secret
