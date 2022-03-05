@@ -82,5 +82,14 @@ jobs:
       - name: create-env-secret
         run: kubectl create secret generic pomello-secret --from-literal=DATABASE_URL=${{ secrets.DATABASE_URL }}
 
-      - name: apply
+      - name: create-pomello-ksa
+        run: kubectl apply -f kubernetes/sidecar
+
+      - name: create-ksa-gsa-binding
+        run: gcloud iam service-accounts add-iam-policy-binding \
+              --role="roles/iam.workloadIdentityUser" \
+              --member="serviceAccount:datadeque.svc.id.goog[default/pomello-sa]" \
+              cloud-auth@datadeque.iam.gserviceaccount.com
+
+      - name: deploy
         run: kubectl apply -f kubernetes/
