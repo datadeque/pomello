@@ -6,6 +6,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { OwnersModule } from './owners/owners.module';
 import { UsersModule } from './users/users.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { UsersModule } from './users/users.module';
     }),
     OwnersModule,
     UsersModule,
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
