@@ -24,6 +24,11 @@ spec:
                 secretKeyRef:
                   name: pomello-secret
                   key: DATABASE_URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: pomello-secret
+                  key: JWT_SECRET
         - name: cloud-sql-proxy
           image: gcr.io/cloudsql-docker/gce-proxy:1.29.0 
           command:

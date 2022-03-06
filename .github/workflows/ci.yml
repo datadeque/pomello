@@ -8,6 +8,19 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test
+          POSTGRES_PORT: 5432
+        ports:
+          - 5432:5432
+    env: 
+      DATABASE_URL: postgresql://test:test@postgres:5432/test?schema=public&sslmode=prefer
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
