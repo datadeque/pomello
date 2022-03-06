@@ -9,3 +9,24 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum OwnerType {
+  USER
+  TEAM
+}
+
+model OwnerEntity {
+  id   Int       @id @default(autoincrement())
+  name String    @unique
+  user User?
+  type OwnerType
+}
+
+model User {
+  owner     OwnerEntity @relation(fields: [id], references: [id])
+  id        Int         @id @unique
+  createdAt DateTime    @default(now())
+  email     String      @unique
+  username  String      @unique
+  password  String
+}
