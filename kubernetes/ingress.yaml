@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pomello
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: pomello-ip
+  labels:
+    app: pomello
+spec:
+  defaultBackend:
+    service:
+      name: pomello
+      port:
+        number: 3000
