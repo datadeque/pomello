@@ -9,7 +9,7 @@ async function bootstrap() {
     origin:
       process.env.NODE_ENV === 'production'
         ? 'https://datadeque.com'
-        : 'http://localhost:3000',
+        : ['http://localhost:3000', 'https://studio.apollographql.com'],
     credentials: true,
   });
   await app.listen(3001);

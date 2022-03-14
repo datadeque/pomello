@@ -19,7 +19,7 @@ import { PrismaModule } from './prisma/prisma.module';
         origin:
           process.env.NODE_ENV === 'production'
             ? 'https://datadeque.com'
-            : 'http://localhost:3000',
+            : ['http://localhost:3000', 'https://studio.apollographql.com'],
         credentials: true,
       },
       context: ({ req }) => ({ req }),

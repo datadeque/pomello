@@ -2,8 +2,8 @@ import { Resolver, Mutation, Args, Query, Context } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { LoginUserInput, User } from 'src/types/graphql';
-import { Res, UseGuards } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { UseGuards } from '@nestjs/common';
+import { Request } from 'express';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
@@ -17,11 +17,13 @@ export class UsersResolver {
   @Mutation('createUser')
   async create(
     @Args('createUserInput') createUserInput: CreateUserInput,
-    @Res({ passthrough: true }) response: Response,
+    @Context('req') req: Request,
   ) {
     const user = await this.usersService.create(createUserInput);
     const cookie = this.authService.createAccessToken(user);
-    response.cookie(...cookie).send({ user });
+    req.res.cookie(...cookie);
+
+    return { user };
   }
 
   @Mutation('loginUser')
