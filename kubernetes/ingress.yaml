@@ -13,4 +13,4 @@ spec:
     service:
       name: pomello
       port:
-        number: 3000
+        number: 3001
