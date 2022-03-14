@@ -20,6 +20,7 @@ jobs:
           - 5432:5432
     env: 
       DATABASE_URL: postgresql://test:test@postgres:5432/test?schema=public&sslmode=prefer
+      JWT_SECRET: secret
 
     steps:
       - uses: actions/checkout@v2
