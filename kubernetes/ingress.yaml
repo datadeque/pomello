@@ -4,6 +4,8 @@ metadata:
   name: pomello
   annotations:
     kubernetes.io/ingress.global-static-ip-name: pomello-ip
+    networking.gke.io/managed-certificates: managed-cert
+    kubernetes.io/ingress.class: "gce"
   labels:
     app: pomello
 spec:
