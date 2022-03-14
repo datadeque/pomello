@@ -27,11 +27,10 @@ export class User {
 
 export class AuthenticationOutput {
     user: User;
-    token: string;
 }
 
 export abstract class IQuery {
-    abstract test(): string | Promise<string>;
+    abstract profile(): User | Promise<User>;
 }
 
 export abstract class IMutation {

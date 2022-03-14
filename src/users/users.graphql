@@ -12,7 +12,6 @@ input CreateUserInput {
 
 type AuthenticationOutput {
   user: User!
-  token: String!
 }
 
 input LoginUserInput {
@@ -22,7 +21,7 @@ input LoginUserInput {
 }
 
 type Query {
-  test: String!
+  profile: User!
 }
 
 type Mutation {

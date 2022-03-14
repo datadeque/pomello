@@ -1,34 +1,46 @@
-import { Resolver, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Query, Context } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { CreateUserInput } from './dto/create-user.input';
-import { signUser } from 'src/utils/jwt';
-import { AuthenticationOutput, LoginUserInput } from 'src/types/graphql';
+import { LoginUserInput, User } from 'src/types/graphql';
+import { UseGuards } from '@nestjs/common';
+import { Request } from 'express';
+import { AuthService } from 'src/auth/auth.service';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Resolver('User')
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Mutation('createUser')
   async create(
     @Args('createUserInput') createUserInput: CreateUserInput,
-  ): Promise<AuthenticationOutput> {
+    @Context('req') req: Request,
+  ) {
     const user = await this.usersService.create(createUserInput);
-    const token = signUser(user);
-    return {
-      user,
-      token,
-    };
+    const cookie = this.authService.createAccessToken(user);
+    req.res.cookie(...cookie);
+
+    return { user };
   }
 
   @Mutation('loginUser')
   async login(
     @Args('loginUserInput') loginUserInput: LoginUserInput,
-  ): Promise<AuthenticationOutput> {
+    @Context('req') req: Request,
+  ) {
     const user = await this.usersService.login(loginUserInput);
-    const token = signUser(user);
-    return {
-      user,
-      token,
-    };
+    const cookie = this.authService.createAccessToken(user);
+    req.res.cookie(...cookie);
+
+    return { user };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => User, { name: 'profile', nullable: false })
+  async profile(@Context('req') req: Request) {
+    return req.user;
   }
 }

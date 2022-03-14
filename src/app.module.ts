@@ -15,6 +15,14 @@ import { PrismaModule } from './prisma/prisma.module';
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       typePaths: ['./**/*.graphql'],
+      cors: {
+        origin:
+          process.env.NODE_ENV === 'production'
+            ? 'https://datadeque.com'
+            : ['http://localhost:3000', 'https://studio.apollographql.com'],
+        credentials: true,
+      },
+      context: ({ req }) => ({ req }),
     }),
     OwnersModule,
     UsersModule,
