@@ -28,6 +28,14 @@ export class UsersService {
       throw new CreateUserError(
         `User with ${userWithEmail ? 'email' : 'username'} already exists`,
       );
+
+    const ownerWithName = await this.prisma.ownerEntity.findUnique({
+      where: {
+        name: username,
+      },
+    });
+    if (ownerWithName) throw new CreateUserError('Username taken');
+
     const owner = await this.ownerService.create({
       name: username,
       type: OwnerType.USER,

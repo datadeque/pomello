@@ -1,0 +1,33 @@
+type Project {
+  id: Int!
+  name: String!
+  description: String!
+  ownerName: String!
+  public: Boolean!
+  nodes: [Node!]
+}
+
+input CreateProjectInput {
+  name: String!
+  description: String!
+  public: Boolean!
+  initialNodeType: NodeType!
+}
+
+input UpdateProjectInput {
+  id: Int!
+  name: String
+  description: String
+}
+
+type Query {
+  publicProject(author: String!, name: String!): Project!
+  project(name: String!): Project!
+  projects: [Project!]!
+}
+
+type Mutation {
+  createProject(createProjectInput: CreateProjectInput!): Project!
+  updateProject(updateProjectInput: UpdateProjectInput!): Project!
+  removeProject(id: Int!): Project
+}

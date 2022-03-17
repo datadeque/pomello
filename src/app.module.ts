@@ -7,6 +7,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { OwnersModule } from './owners/owners.module';
 import { UsersModule } from './users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { NodesModule } from './nodes/nodes.module';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { PrismaModule } from './prisma/prisma.module';
     OwnersModule,
     UsersModule,
     PrismaModule,
+    NodesModule,
+    ProjectsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

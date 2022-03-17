@@ -37,6 +37,7 @@ model User {
 model Project {
   id            Int         @id @unique @default(autoincrement())
   name          String
+  description   String
   ownerName     String
   public        Boolean?    @default(false)
   createdAt     DateTime    @default(now())
@@ -44,6 +45,9 @@ model Project {
   OwnerEntity   OwnerEntity @relation(fields: [ownerEntityId, ownerName], references: [id, name])
   ownerEntityId Int
   nodes         Node[]
+
+  @@unique([ownerName, name], name: "Project_ownerName_name_key")
+  @@unique([ownerEntityId, name], name: "Project_ownerEntityId_name_key")
 }
 
 model Node {
@@ -52,6 +56,13 @@ model Node {
   data      Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  project   Project  @relation(fields: [projectId], references: [id])
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   projectId Int
+  type      NodeType
+}
+
+enum NodeType {
+  BAR
+  PIE
+  TEXT
 }
