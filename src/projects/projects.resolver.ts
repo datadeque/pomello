@@ -7,7 +7,7 @@ import { UseGuards } from '@nestjs/common';
 import { NodeType, Project, User } from 'src/types/graphql';
 import { CurrentUser } from 'src/users/decorators/users.decorator';
 import { NodesService } from 'src/nodes/nodes.service';
-import { ForbiddenError, UserInputError } from 'apollo-server-errors';
+import { UserInputError } from 'apollo-server-errors';
 
 @Resolver('Project')
 export class ProjectsResolver {
@@ -70,5 +70,10 @@ export class ProjectsResolver {
   @Mutation('removeProject')
   remove(@Args('id') id: number, @CurrentUser() user: User) {
     return this.projectsService.remove(id, user);
+  }
+
+  @Query('publicProject')
+  publicProject(@Args('author') author: string, @Args('name') name: string) {
+    return this.projectsService.findByAuthorAndName(author, name);
   }
 }
