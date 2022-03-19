@@ -1,0 +1,31 @@
+type Node {
+  id: String!
+  position: String!
+  data: String!
+  type: NodeType!
+}
+
+enum NodeType {
+  BAR
+  PIE
+  TEXT
+}
+
+input CreateNodeInput {
+  before: String
+  after: String
+  data: String!
+  projectId: Int!
+  type: NodeType!
+}
+
+input UpdateNodeInput {
+  nodeId: String!
+  data: String!
+}
+
+type Mutation {
+  createNode(createNodeInput: CreateNodeInput!): Node!
+  updateNode(updateNodeInput: UpdateNodeInput!): Node!
+  removeNode(id: String!): Node!
+}

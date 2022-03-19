@@ -17,6 +17,8 @@ export class AuthService {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
         path: '/',
         signed: true,
+        sameSite: 'none',
+        secure: true,
       },
     ];
   }

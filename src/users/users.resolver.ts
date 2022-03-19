@@ -6,6 +6,7 @@ import { UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { CurrentUser } from './decorators/users.decorator';
 
 @Resolver('User')
 export class UsersResolver {
@@ -40,7 +41,7 @@ export class UsersResolver {
 
   @UseGuards(JwtAuthGuard)
   @Query(() => User, { name: 'profile', nullable: false })
-  async profile(@Context('req') req: Request) {
-    return req.user;
+  async profile(@CurrentUser() user: User) {
+    return user;
   }
 }
