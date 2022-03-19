@@ -8,7 +8,7 @@ async function bootstrap() {
   app.enableCors({
     origin:
       process.env.NODE_ENV === 'production'
-        ? 'https://datadeque.com'
+        ? ['https://datadeque.com', 'https://www.datadeque.com']
         : ['http://localhost:3000', 'https://studio.apollographql.com'],
     credentials: true,
   });
