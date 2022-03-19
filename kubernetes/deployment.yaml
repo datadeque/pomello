@@ -18,6 +18,7 @@ spec:
       containers: 
         - name: pomello
           image: hongrichard/pomello
+          imagePullPolicy: Always
           env:
             - name: DATABASE_URL
               valueFrom:
