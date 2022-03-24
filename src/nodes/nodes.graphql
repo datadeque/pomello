@@ -8,6 +8,8 @@ type Node {
 enum NodeType {
   BAR
   PIE
+  SCATTER
+  LINE
   TEXT
 }
 

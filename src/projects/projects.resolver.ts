@@ -26,7 +26,7 @@ export class ProjectsResolver {
     const node = await this.nodesService.create(
       {
         projectId: project.id,
-        data: JSON.stringify({ title: 'Graph', description: 'Lorem Ipsum' }),
+        data: JSON.stringify({}),
         type: createProjectInput.initialNodeType ?? NodeType.BAR,
       },
       user,
