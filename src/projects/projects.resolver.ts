@@ -1,10 +1,9 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ProjectsService } from './projects.service';
 import { CreateProjectInput } from './dto/create-project.input';
-import { UpdateProjectInput } from './dto/update-project.input';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common';
-import { NodeType, Project, User } from 'src/types/graphql';
+import { NodeType, Project, UpdateProjectInput, User } from 'src/types/graphql';
 import { CurrentUser } from 'src/users/decorators/users.decorator';
 import { NodesService } from 'src/nodes/nodes.service';
 import { UserInputError } from 'apollo-server-errors';
@@ -57,7 +56,15 @@ export class ProjectsResolver {
     @CurrentUser() user: User,
   ) {
     if (updateProjectInput.name && updateProjectInput.description) {
-      throw new UserInputError('Cannot updat name and input at the same time');
+      throw new UserInputError('Cannot update name and input at the same time');
+    }
+    if (
+      updateProjectInput.public !== undefined &&
+      (updateProjectInput.name || updateProjectInput.description)
+    ) {
+      throw new UserInputError(
+        'Cannot visibility with other fields at the same time',
+      );
     }
     return this.projectsService.update(
       updateProjectInput.id,
