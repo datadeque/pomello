@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ForbiddenError, UserInputError } from 'apollo-server-errors';
 import { NotFoundError } from 'src/errors';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { User } from 'src/types/graphql';
+import { UpdateProjectInput, User } from 'src/types/graphql';
 import { CreateProjectInput } from './dto/create-project.input';
-import { UpdateProjectInput } from './dto/update-project.input';
 
 @Injectable()
 export class ProjectsService {
@@ -97,6 +96,16 @@ export class ProjectsService {
     if (!project) throw new NotFoundError('Project not found');
     if (project.ownerEntityId !== user.id) {
       throw new ForbiddenError('Cannot edit project');
+    }
+    if (updateProjectInput.public !== undefined) {
+      return await this.prisma.project.update({
+        where: {
+          id,
+        },
+        data: {
+          public: updateProjectInput.public,
+        },
+      });
     }
     if (updateProjectInput.name) {
       const projectWithName = await this.prisma.project.findUnique({

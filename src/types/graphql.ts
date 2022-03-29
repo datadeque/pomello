@@ -37,6 +37,7 @@ export class UpdateProjectInput {
     id: number;
     name?: Nullable<string>;
     description?: Nullable<string>;
+    public?: Nullable<boolean>;
 }
 
 export class CreateUserInput {

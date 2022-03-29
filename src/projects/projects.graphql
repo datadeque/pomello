@@ -18,6 +18,7 @@ input UpdateProjectInput {
   id: Int!
   name: String
   description: String
+  public: Boolean
 }
 
 type Query {
