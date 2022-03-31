@@ -50,7 +50,11 @@ export class ProjectsService {
         },
       },
       include: {
-        nodes: true,
+        nodes: {
+          orderBy: {
+            position: 'asc',
+          },
+        },
       },
       rejectOnNotFound: false,
     });
@@ -65,7 +69,11 @@ export class ProjectsService {
         id,
       },
       include: {
-        nodes: true,
+        nodes: {
+          orderBy: {
+            position: 'asc',
+          },
+        },
       },
       rejectOnNotFound: false,
     });
@@ -89,7 +97,11 @@ export class ProjectsService {
         id,
       },
       include: {
-        nodes: true,
+        nodes: {
+          orderBy: {
+            position: 'asc',
+          },
+        },
       },
       rejectOnNotFound: false,
     });
@@ -116,7 +128,11 @@ export class ProjectsService {
           },
         },
         include: {
-          nodes: true,
+          nodes: {
+            orderBy: {
+              position: 'asc',
+            },
+          },
         },
         rejectOnNotFound: false,
       });
@@ -158,7 +174,13 @@ export class ProjectsService {
 
     return await this.prisma.project.delete({
       where: { id },
-      include: { nodes: true },
+      include: {
+        nodes: {
+          orderBy: {
+            position: 'asc',
+          },
+        },
+      },
     });
   }
 }
