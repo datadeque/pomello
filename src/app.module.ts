@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { NodesModule } from './nodes/nodes.module';
 import { ProjectsModule } from './projects/projects.module';
+import { TokensModule } from './tokens/tokens.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ProjectsModule } from './projects/projects.module';
     PrismaModule,
     NodesModule,
     ProjectsModule,
+    TokensModule,
   ],
   controllers: [AppController],
   providers: [AppService],
