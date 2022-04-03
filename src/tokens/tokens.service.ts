@@ -36,8 +36,8 @@ export class TokensService {
     });
   }
 
-  async validateToken(token: Token) {
-    if (!token || token.expiresAt.getTime() < Date.now()) return token;
+  async validateToken(token?: Token) {
+    if (!token || token.expiresAt.getTime() > Date.now()) return token;
     await this.remove(token.id);
     return null;
   }
