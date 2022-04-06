@@ -32,6 +32,7 @@ model User {
   email     String      @unique
   username  String      @unique
   password  String
+  Token     Token[]
 }
 
 model Project {
@@ -67,4 +68,11 @@ enum NodeType {
   SCATTER
   LINE
   TEXT
+}
+
+model Token {
+  id        String   @id @unique @default(uuid())
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
 }

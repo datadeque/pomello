@@ -2,9 +2,13 @@ import { Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { Request } from 'express';
-import { User } from 'src/types/graphql';
 import { AuthenticationError } from 'apollo-server-errors';
 import { UsersService } from 'src/users/users.service';
+import { TokensService } from 'src/tokens/tokens.service';
+
+export interface AccessToken {
+  tokenId: string;
+}
 
 const cookieExtractor = (req: Request) => {
   if (req && req.signedCookies && !('access_token' in req.signedCookies)) {
@@ -15,7 +19,10 @@ const cookieExtractor = (req: Request) => {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly usersService: UsersService) {
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly tokensService: TokensService,
+  ) {
     super({
       jwtFromRequest: cookieExtractor,
       ignoreExpiration: false,
@@ -23,13 +30,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(user: User | null) {
-    if (!user) throw new AuthenticationError('Error parsing token');
-    const dbUser = await this.usersService.findOne(user.id);
+  async validate(token: AccessToken | null) {
+    if (!token) throw new AuthenticationError('Error parsing token');
+    const dbToken = await this.tokensService.findById(token.tokenId);
+    if (!dbToken) throw new AuthenticationError('Error fetching token');
+
+    const dbUser = await this.usersService.findOne(dbToken.userId);
     if (!dbUser) throw new AuthenticationError('User does not exist');
-    if (dbUser.username !== user.username || dbUser.email !== user.email) {
-      throw new AuthenticationError('Malformed user token');
-    }
-    return user;
+    return dbUser;
   }
 }

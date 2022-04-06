@@ -21,7 +21,7 @@ export class UsersResolver {
     @Context('req') req: Request,
   ) {
     const user = await this.usersService.create(createUserInput);
-    const cookie = this.authService.createAccessToken(user);
+    const cookie = await this.authService.createAccessToken(user);
     req.res.cookie(...cookie);
 
     return { user };
@@ -33,7 +33,7 @@ export class UsersResolver {
     @Context('req') req: Request,
   ) {
     const user = await this.usersService.login(loginUserInput);
-    const cookie = this.authService.createAccessToken(user);
+    const cookie = await this.authService.createAccessToken(user);
     req.res.cookie(...cookie);
 
     return { user };

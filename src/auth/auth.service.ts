@@ -1,17 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { CookieOptions } from 'express';
+import { TokensService } from 'src/tokens/tokens.service';
 import { User } from 'src/types/graphql';
-import { signUser } from 'src/utils/jwt';
+import { signToken } from 'src/utils/jwt';
 
 @Injectable()
 export class AuthService {
-  createAccessToken(
+  constructor(private readonly tokensService: TokensService) {}
+  async createAccessToken(
     user: User,
-  ): [name: string, val: string, options: CookieOptions] {
-    const token = signUser(user, process.env.JWT_SECRET);
+  ): Promise<[name: string, val: string, options: CookieOptions]> {
+    const token =
+      (await this.tokensService.findByUser(user.id)) ??
+      (await this.tokensService.create({
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        userId: user.id,
+      }));
+
+    const clientToken = signToken(token, process.env.JWT_SECRET);
     return [
       'access_token',
-      token,
+      clientToken,
       {
         httpOnly: true,
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
