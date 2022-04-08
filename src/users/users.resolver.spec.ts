@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthModule } from 'src/auth/auth.module';
 import { OwnersModule } from 'src/owners/owners.module';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { TokensModule } from 'src/tokens/tokens.module';
 import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
 
@@ -12,7 +13,12 @@ describe('UsersResolver', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UsersResolver, UsersService],
-      imports: [OwnersModule, PrismaModule, forwardRef(() => AuthModule)],
+      imports: [
+        OwnersModule,
+        PrismaModule,
+        forwardRef(() => AuthModule),
+        TokensModule,
+      ],
     }).compile();
 
     resolver = module.get<UsersResolver>(UsersResolver);
