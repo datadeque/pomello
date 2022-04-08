@@ -10,6 +10,8 @@
 export enum NodeType {
     BAR = "BAR",
     PIE = "PIE",
+    SCATTER = "SCATTER",
+    LINE = "LINE",
     TEXT = "TEXT"
 }
 
@@ -75,6 +77,8 @@ export abstract class IMutation {
     abstract createUser(createUserInput: CreateUserInput): AuthenticationOutput | Promise<AuthenticationOutput>;
 
     abstract loginUser(loginUserInput: LoginUserInput): AuthenticationOutput | Promise<AuthenticationOutput>;
+
+    abstract logoutUser(): LogoutUserOutput | Promise<LogoutUserOutput>;
 }
 
 export class Project {
@@ -104,6 +108,10 @@ export class User {
 
 export class AuthenticationOutput {
     user: User;
+}
+
+export class LogoutUserOutput {
+    success: boolean;
 }
 
 type Nullable<T> = T | null;
