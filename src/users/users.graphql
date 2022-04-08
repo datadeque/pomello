@@ -14,6 +14,10 @@ type AuthenticationOutput {
   user: User!
 }
 
+type LogoutUserOutput {
+  success: Boolean!
+}
+
 input LoginUserInput {
   username: String
   email: String
@@ -27,4 +31,5 @@ type Query {
 type Mutation {
   createUser(createUserInput: CreateUserInput!): AuthenticationOutput!
   loginUser(loginUserInput: LoginUserInput!): AuthenticationOutput!
+  logoutUser: LogoutUserOutput!
 }

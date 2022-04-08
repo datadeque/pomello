@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaModule } from 'src/prisma/prisma.module';
 import { TokensService } from './tokens.service';
 
 @Module({
-  imports: [PrismaService],
+  imports: [PrismaModule],
   providers: [TokensService],
   exports: [TokensService],
 })
